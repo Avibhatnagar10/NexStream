@@ -1,7 +1,7 @@
 // components/StreamLayout.js
 import React from 'react';
 import VideoPlayer from './VideoPlayer';
-import ChatBox from './ChatBox';
+import ChatBox from './chatbox';
 
 const StreamLayout = () => {
   return (

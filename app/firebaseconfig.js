@@ -1,7 +1,6 @@
-// firebaseConfig.js
-
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, setPersistence, browserLocalPersistence } from "firebase/auth";
+import { getFirestore } from 'firebase/firestore';
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -16,9 +15,17 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Initialize Firebase Authentication and provider
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+const db = getFirestore(app);
 
-export { auth, provider };
+// Set the persistence to 'local' so the user remains signed in
+setPersistence(auth, browserLocalPersistence)
+  .then(() => {
+    console.log('Persistence set to local. User will remain signed in.');
+  })
+  .catch((error) => {
+    console.error('Error setting persistence:', error);
+  });
+
+export { auth, provider, db };

@@ -3,80 +3,16 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap'); /* Import Montserrat Bold */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
 
-/* styles/globals.css */
-html {
-  transition: background-color 0.3s ease;
-}
-
-body {
-  @apply bg-black;
-  margin: 0;
-  font-family: 'Roboto', sans-serif;
-  font-size: 3rem; /* Set Roboto as the default font */
-}
-
-.light-mode {
-  background-color: white;
-}
-
-.light-mode nav {
-  background-color: #f8fafc; /* Light gray */
-}
-
-.light-mode h1 {
-  color: black;
-}
-
-/* Button Styles */
-button {
-  background-color: transparent; /* Unfilled background color */
-  color: white; /* Default text color */
-  font-size: 1.1rem; /* Increase button text size */
-  padding: 0.5rem 1rem; /* Add padding for better touch area */
-  border: none; /* Remove border */
-  border-radius: 5px; /* Slight rounding to corners */
-  transition: background-color 0.3s, color 0.3s; /* Smooth transitions */
-  cursor: pointer; /* Change cursor to pointer */
-}
-
-button:hover {
-  background-color: rgba(255, 255, 255, 0.1); /* Light background on hover */
-}
-
-button:focus {
-  outline: none; /* Remove default outline */
-}
-
-/* Highlighting StreamForge */
-.streamforge {
-  font-family: 'Montserrat', sans-serif; /* Use Montserrat for StreamForge */
-  font-weight: 700; /* Bold weight */
-  color: #00b3ff; /* Light blue color */
-  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7); /* Text shadow */
-}
-
-/* Pulse animation for the button */
-@keyframes pulse {
-  0% {
-    transform: scale(1);
+/* Define custom styles in the @layer directive */
+@layer base {
+  body {
+    @apply bg-black text-white;
+    font-family: 'Roboto', sans-serif; /* Apply Roboto font to body */
   }
-  50% {
-    transform: scale(1.05); /* Scale up */
-  }
-  100% {
-    transform: scale(1); /* Scale back to normal */
-  }
-}
 
-/* Add styles for links if needed */
-a {
-  color: #e7e8eb; /* Default link color */
-  transition: color 0.3s, transform 0.3s; /* Smooth transitions */
-}
-
-a:hover {
-  color: #6477ee; /* Change color on hover */
-  transform: scale(1.05); /* Scale on hover */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif; /* Apply Montserrat font to headings */
+  }
 }

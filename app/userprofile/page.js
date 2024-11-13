@@ -1,91 +1,80 @@
 "use client"; // Use this to make the component a client component
 
-import React, { useState } from "react";
+import React from "react";
 import { auth } from "../firebaseConfig"; // Import auth
 import { useAuthState } from "react-firebase-hooks/auth"; // Import useAuthState for easy auth state handling
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
+import AnimatedGridPattern  from "../components/Grid Pattern";
 
 const UserProfile = () => {
   const [user] = useAuthState(auth); // Get the current user
-  const [profilePic, setProfilePic] = useState(user?.photoURL || ""); // State for profile picture
-  const [isUploading, setIsUploading] = useState(false); // State for upload indicator
   const router = useRouter(); // Create a router instance for navigation
+  router.push("/userprofile");
 
-  // Function to handle image upload
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setProfilePic(reader.result); // Set the uploaded image as profile picture
-      setIsUploading(false); // Hide upload indicator
-    };
-    if (file) {
-      setIsUploading(true); // Show upload indicator
-      reader.readAsDataURL(file); // Read the file as a data URL
-    }
-  };
-
-  // Function to delete profile picture
-  const handleDeletePicture = () => {
-    setProfilePic(""); // Reset to blank
-  };
-
-  // Function to navigate to home page
+  // Function to navigate to the home page
   const handleReturnHome = () => {
     router.push("/"); // Navigate to the home page
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
+    <div className="flex flex-col items-center justify-center min-h-screen   text-white">
+      <AnimatedGridPattern className="absolute h-[100vh] w-[100vw]"/>
       {user ? (
-        <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
-          <div className="flex flex-col items-center">
-            <div className="relative mb-4">
-              {profilePic ? (
-                <img
-                  src={profilePic}
-                  alt="Profile"
-                  className="w-32 h-32 rounded-full border-4 border-gray-700 transition-transform duration-300 transform hover:scale-105"
-                />
-              ) : (
-                <div className="flex items-center justify-center w-32 h-32 rounded-full border-4 border-dashed border-gray-700 text-gray-500">
-                  <span className="text-lg">No Image</span>
-                </div>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-                title="Upload Profile Picture"
+        <div className="flex flex-col items-center w-full max-w-lg p-8 rounded-xl shadow-lg bg-gray-800 bg-opacity-50 backdrop-blur-lg transition-all duration-300 transform hover:scale-105">
+          {/* Profile Picture */}
+          <div className="relative mb-6">
+            {user.photoURL ? (
+              <img
+                src={user.photoURL} // Display Google profile picture
+                alt="Profile"
+                className="w-40 h-40 rounded-full border-4 shadow-lg transition-transform duration-300 transform hover:scale-110 hover:border-blue-400"
               />
-              <div className="absolute bottom-0 right-0 flex space-x-2">
-                <button
-                  onClick={handleDeletePicture}
-                  className="bg-red-600 hover:bg-red-500 text-white font-bold py-1 px-2 rounded-md focus:outline-none"
-                >
-                  Delete
-                </button>
-                {isUploading && (
-                  <span className="text-yellow-400">Uploading...</span>
-                )}
+            ) : (
+              <div className="flex items-center justify-center w-32 h-32 rounded-full border-4 border-dashed border-gray-700 text-gray-500">
+                <span className="text-lg">No Image</span>
               </div>
-            </div>
-            <h1 className="text-2xl font-bold mb-2">{user.displayName || "User"}</h1>
-            <p className="text-gray-400">Email: {user.email}</p>
-            <p className="text-gray-400">User ID: {user.uid}</p>
+            )}
           </div>
-          <div className="flex justify-center mt-6">
+
+          {/* User Info */}
+          <h1 className="text-4xl font-extrabold mb-2 text-transparent bg-clip-text bg-gradient-to-r bg-yellow-500 ">
+            {user.displayName || "User"}
+          </h1>
+          <p className="text-gray-00 text-md mb-2">Email: {user.email}</p>
+          <p className="text-gray-500 text-sm">User ID: {user.uid}</p>
+
+          {/* Bio and Location */}
+          <div className="mt-6 w-full max-w-md p-4 bg-gray-700 rounded-lg shadow-md">
+            <textarea
+              className="w-full h-24 p-2 mb-4 bg-gray-900 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Add a bio..."
+              rows="3"
+            ></textarea>
+            <input
+              type="text"
+              className="w-full p-2 mb-4 bg-gray-900 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Current Location"
+            />
+          </div>
+
+          {/* Buttons */}
+          <div className="flex justify-center mt-6 space-x-4">
             <button
               onClick={handleReturnHome}
-              className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-md focus:outline-none"
+              className=" hover:bg-slate-950 bg-gray-900 font-bold py-2 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none"
             >
-              Return to Home
+              Home
             </button>
+            {/* <button
+              onClick={() => console.log("Edit Profile")}
+              className="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none"
+            >
+              Edit Profile
+            </button> */}
           </div>
         </div>
       ) : (
-        <h1 className="text-xl">Please sign in to see your profile</h1>
+        <h1 className="text-2xl font-semibold">Please sign in to view your profile</h1>
       )}
     </div>
   );
